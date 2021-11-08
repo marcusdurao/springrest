@@ -1,6 +1,6 @@
 package br.com.erudio.repository;
 
-import br.com.erudio.model.Person;
+import br.com.erudio.model.data.Person;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

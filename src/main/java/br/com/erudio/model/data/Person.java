@@ -1,4 +1,4 @@
-package br.com.erudio.model;
+package br.com.erudio.model.data;
 
 import javax.persistence.*;
 import java.io.Serializable;

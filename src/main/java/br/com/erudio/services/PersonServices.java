@@ -1,14 +1,14 @@
 package br.com.erudio.services;
 
+import br.com.erudio.converter.DozerConverter;
+import br.com.erudio.data.vo.PersonVO;
 import br.com.erudio.exception.ResourceNotFoundException;
-import br.com.erudio.model.Person;
+import br.com.erudio.model.data.Person;
 import br.com.erudio.repository.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicLong;
 
 @Service
 public class PersonServices {
@@ -16,21 +16,23 @@ public class PersonServices {
     @Autowired
     PersonRepository repo;
 
-    public Person create(Person person) {
-        return repo.save(person);
+    public PersonVO create(PersonVO personVO) {
+        var entity = DozerConverter.parseObject(personVO, Person.class);
+        var vo = DozerConverter.parseObject(repo.save(entity), PersonVO.class);
+        return vo;
     }
 
-    public Person update(Person person) {
-        Person entity = repo.findById(person.getId()).orElseThrow(
+    public PersonVO update(PersonVO personVO) {
+        var entity =  repo.findById(personVO.getId()).orElseThrow(
                 () -> new ResourceNotFoundException("Registro não encontrado.")
         );
 
-        entity.setFirstName(person.getFirstName());
-        entity.setLastName(person.getLastName());
-        entity.setAddress(person.getAddress());
-        entity.setGender(person.getGender());
+        entity.setFirstName(personVO.getFirstName());
+        entity.setLastName(personVO.getLastName());
+        entity.setAddress(personVO.getAddress());
+        entity.setGender(personVO.getGender());
 
-        return repo.save(entity);
+        return DozerConverter.parseObject(repo.save(entity), PersonVO.class);
     }
 
     public void delete(Long id) {
@@ -42,14 +44,15 @@ public class PersonServices {
         repo.delete(entity);
     }
 
-    public Person findById(Long id) {
-        return repo.findById(id).orElseThrow(
+    public PersonVO findById(Long id) {
+        var entity = repo.findById(id).orElseThrow(
                 () -> new ResourceNotFoundException("Registro não encontrado.")
         );
+        return DozerConverter.parseObject(entity, PersonVO.class);
     }
 
-    public List<Person> findAll() {
-        return repo.findAll();
+    public List<PersonVO> findAll() {
+        return  DozerConverter.parseListObjects(repo.findAll(), PersonVO.class);
     }
 
 }
