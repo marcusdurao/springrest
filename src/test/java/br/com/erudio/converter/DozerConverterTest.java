@@ -1,6 +1,6 @@
 package br.com.erudio.converter;
 
-import br.com.erudio.data.vo.PersonVO;
+import br.com.erudio.data.vo.v1.PersonVO;
 import br.com.erudio.mock.MockPerson;
 import br.com.erudio.model.data.Person;
 import org.junit.jupiter.api.Assertions;
